@@ -14,13 +14,14 @@ public class Todo {
 			Command command = null;
 			while (doContinue) {
 				inputText = scanner.nextLine();
-				command = Command.create(inputText);
-				command.run();
-				doContinue = command.nextCommandWaitIs();
+				try {
+					command = Command.create(inputText);
+					command.run();
+					doContinue = command.nextCommandWaitIs();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
 			}
-		} catch (ReflectiveOperationException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
 		}
 	}
 
