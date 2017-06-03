@@ -1,12 +1,18 @@
 package todo.command;
 
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import todo.exception.TodoException;
+import todo.util.MessageUtil;
 import todo.util.StringUtil;
 
 public abstract class Command {
 
-	public static Command create(String inputText) throws ReflectiveOperationException {
+	private static final Logger logger = Logger.getLogger(Command.class.getSimpleName());
+
+	public static Command create(String inputText) throws TodoException {
 		// 入力文字列(コマンド、引数)を配列化
 		String[] text = inputText.split(" ");
 		// パッケージ名 + クラス名
@@ -18,9 +24,10 @@ public abstract class Command {
 			// 引数設定時にチェックを行う
 			command.setArguments(args);
 			return command;
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-			e.printStackTrace();
-			throw e;
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			String message = MessageUtil.getMessage("error.command.create");
+			logger.log(Level.SEVERE, message, e);
+			throw new TodoException(message, e);
 		}
 	}
 
