@@ -37,7 +37,9 @@ public abstract class Command {
 	 * 
 	 * @param args
 	 */
-	public abstract void setArguments(String[] args);
+	public void setArguments(String[] args){
+		
+	}
 
 	/**
 	 * コマンドを実行します。
