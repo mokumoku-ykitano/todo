@@ -1,16 +1,11 @@
 package todo.command;
 
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import todo.exception.TodoException;
-import todo.util.MessageUtil;
 import todo.util.StringUtil;
 
 public abstract class Command {
-
-	private static final Logger logger = Logger.getLogger(Command.class.getSimpleName());
 
 	public static Command create(String inputText) throws TodoException {
 		// 入力文字列(コマンド、引数)を配列化
@@ -25,14 +20,12 @@ public abstract class Command {
 			command.setArguments(args);
 			return command;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			String message = MessageUtil.getMessage("error.command.create");
-			logger.log(Level.SEVERE, message, e);
-			throw new TodoException(message, e);
+			throw new TodoException(e, "error.command.create");
 		}
 	}
 
 	/*
-	 * (パッケージ名 + クラス)名の文字列を作成します。
+	 * (パッケージ名 + クラス名)の文字列を作成します。
 	 */
 	private static String makeFullClassName(String className) {
 		return Command.class.getPackage().getName() + "." + StringUtil.capitalize(className);
@@ -49,7 +42,7 @@ public abstract class Command {
 	/**
 	 * コマンドを実行します。
 	 */
-	public abstract void run();
+	public abstract void execute() throws TodoException;
 
 	/**
 	 * 次の入力を待つかどうか。<br>
