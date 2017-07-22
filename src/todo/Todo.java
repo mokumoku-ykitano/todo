@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 import todo.command.Command;
 
 public class Todo {
-	
+
 	private static final Logger logger = Logger.getLogger(Todo.class.getSimpleName());
-	
+
 	public static void main(String[] args) throws SecurityException, IOException {
 
 		// ログの設定
@@ -29,6 +29,7 @@ public class Todo {
 				try {
 					command = Command.create(inputText);
 					command.execute();
+					System.out.println();
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
