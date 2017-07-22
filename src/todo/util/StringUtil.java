@@ -1,6 +1,13 @@
 package todo.util;
 
 public final class StringUtil {
+	
+	/*
+	 * インスタンス化禁止
+	 */
+	private StringUtil(){
+		
+	}
 
 	/**
 	 * 文字列が空か評価します。
