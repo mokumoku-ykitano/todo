@@ -44,7 +44,7 @@ public class Add extends Command {
 		} catch (JsonProcessingException e) {
 			throw new TodoException(e, "error.add.json");
 		} catch (IOException e) {
-			throw new TodoException(e, "error.add.list", todoTitle);
+			throw new TodoException(e, "error.command.add.list", todoTitle);
 		}
 	}
 }

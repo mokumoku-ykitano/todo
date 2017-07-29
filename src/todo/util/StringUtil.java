@@ -1,12 +1,12 @@
 package todo.util;
 
 public final class StringUtil {
-	
+
 	/*
 	 * インスタンス化禁止
 	 */
-	private StringUtil(){
-		
+	private StringUtil() {
+
 	}
 
 	/**
@@ -32,6 +32,28 @@ public final class StringUtil {
 		char chars[] = text.toCharArray();
 		chars[0] = Character.toUpperCase(chars[0]);
 		return new String(chars);
+	}
+
+	/**
+	 * 文字列が数値か評価します。
+	 * 
+	 * @param s
+	 * @return 数値の場合、true
+	 */
+	public static boolean isNumber(String s) {
+		if (isEmpty(s)) {
+			return false;
+		}
+
+		final int size = s.length();
+		for (int i = 0; i < size; i++) {
+			final char chr = s.charAt(i);
+			if (chr < '0' || '9' < chr) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

@@ -5,10 +5,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -65,6 +67,29 @@ public final class TodoListUtil {
 			}
 		} else {
 			return new ArrayList<>();
+		}
+	}
+
+	/**
+	 * todoリストを引数の内容で上書きします。
+	 * 
+	 * @param todoList
+	 * @throws TodoException
+	 * @throws IOException
+	 */
+	public static void write(List<Todo> todoList) throws TodoException, IOException {
+		try {
+			String jsonText = new ObjectMapper().writeValueAsString(todoList);
+			List<String> list = new ArrayList<>();
+			list.add(jsonText);
+
+			Files.write(TodoListUtil.getTodoListPath(), list, StandardOpenOption.CREATE,
+					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+		} catch (JsonProcessingException e) {
+			throw new TodoException(e, "error.util.json");
+		} catch (IOException e) {
+			// 呼び出し元でキャッチしてエラーを設定する
+			throw e;
 		}
 	}
 

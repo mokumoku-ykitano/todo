@@ -29,12 +29,12 @@ public class Todo {
 				try {
 					command = Command.create(inputText);
 					command.execute();
-					System.out.println();
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 					logger.log(Level.SEVERE, e.getMessage(), e);
 				}
+				System.out.println();
 			}
 		}
 	}
