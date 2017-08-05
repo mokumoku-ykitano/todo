@@ -20,6 +20,16 @@ public final class StringUtil {
 	}
 
 	/**
+	 * 文字列が空でないか評価します。
+	 * 
+	 * @param text
+	 * @return 文字列がnullでないまたは空文字列でければtrue
+	 */
+	public static boolean isNotEmpty(String text) {
+		return !isEmpty(text);
+	}
+
+	/**
 	 * 先頭の文字を大文字に変換します。
 	 * 
 	 * @param text
@@ -37,17 +47,17 @@ public final class StringUtil {
 	/**
 	 * 文字列が数値か評価します。
 	 * 
-	 * @param s
+	 * @param text
 	 * @return 数値の場合、true
 	 */
-	public static boolean isNumber(String s) {
-		if (isEmpty(s)) {
+	public static boolean isNumber(String text) {
+		if (isEmpty(text)) {
 			return false;
 		}
 
-		final int size = s.length();
+		final int size = text.length();
 		for (int i = 0; i < size; i++) {
-			final char chr = s.charAt(i);
+			final char chr = text.charAt(i);
 			if (chr < '0' || '9' < chr) {
 				return false;
 			}

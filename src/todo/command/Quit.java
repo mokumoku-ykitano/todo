@@ -10,6 +10,7 @@ public class Quit extends Command {
 		System.out.println(MessageUtil.getMessage("info.quit"));
 	}
 	
+	@Override
 	public boolean nextCommandWaitIs() {
 		return false;
 	}

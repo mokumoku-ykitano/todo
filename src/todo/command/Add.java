@@ -1,18 +1,12 @@
 package todo.command;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import todo.dto.json.Todo;
 import todo.exception.TodoException;
-import todo.json.Todo;
 import todo.util.MessageUtil;
-import todo.util.TodoListUtil;
+import todo.util.FilesUtil;
 
 public class Add extends Command {
 
@@ -29,20 +23,13 @@ public class Add extends Command {
 	@Override
 	public void execute() throws TodoException {
 		try {
-			List<Todo> todoList = TodoListUtil.loadTodoList();
+			List<Todo> todoList = FilesUtil.loadTodoList();
 			todoList.add(new Todo(todoTitle));
 
-			String jsonText = new ObjectMapper().writeValueAsString(todoList);
-			List<String> list = new ArrayList<>();
-			list.add(jsonText);
+			FilesUtil.writeTodoList(todoList);
 
-			Files.write(TodoListUtil.getTodoListPath(), list, StandardOpenOption.CREATE,
-					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+			System.out.println(MessageUtil.getMessage("info.command.add.finish", todoTitle));
 
-			System.out.println(MessageUtil.getMessage("info.add.finish", todoTitle));
-
-		} catch (JsonProcessingException e) {
-			throw new TodoException(e, "error.add.json");
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.add.list", todoTitle);
 		}

@@ -1,22 +1,29 @@
 package todo;
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import todo.command.Command;
+import todo.dto.ExecutingTodo;
+import todo.util.FilesUtil;
 
-public class Todo {
+public class TodoControl {
 
-	private static final Logger logger = Logger.getLogger(Todo.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(TodoControl.class.getSimpleName());
 
-	public static void main(String[] args) throws SecurityException, IOException {
+	/** 実行中のtodoオブジェクト */
+	private static ExecutingTodo executingTodo;
+
+	public static void main(String[] args) throws Exception {
 
 		// ログの設定
 		LogManager.getLogManager()
-				.readConfiguration(Todo.class.getClassLoader().getResourceAsStream("logging.properties"));
+				.readConfiguration(TodoControl.class.getClassLoader().getResourceAsStream("logging.properties"));
+
+		// 必要なフォルダを全て作成する
+		FilesUtil.createTodoDirectories();
 
 		try (Scanner scanner = new Scanner(System.in)) {
 
@@ -29,6 +36,9 @@ public class Todo {
 				try {
 					command = Command.create(inputText);
 					command.execute();
+					if (command.getExecutingTodo() != null) {
+						executingTodo = command.getExecutingTodo();
+					}
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
@@ -37,6 +47,10 @@ public class Todo {
 				System.out.println();
 			}
 		}
+	}
+
+	public static ExecutingTodo getExecutingTodo() {
+		return executingTodo;
 	}
 
 }

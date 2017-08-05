@@ -1,4 +1,4 @@
-package todo.json;
+package todo.dto.json;
 
 public class Todo {
 
