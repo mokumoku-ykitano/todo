@@ -29,6 +29,9 @@ public class Add extends Command {
 			FilesUtil.writeTodoList(todoList);
 
 			System.out.println(MessageUtil.getMessage("info.command.add.finish", todoTitle));
+			
+			Command listCommand = new todo.command.List();
+			listCommand.execute();
 
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.add.list", todoTitle);

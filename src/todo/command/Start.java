@@ -40,10 +40,14 @@ public class Start extends Command {
 			return;
 		}
 
+		String executingTodoTitle = todoList.get(index).title;
+
 		ExecutingTodo executingTodo = new ExecutingTodo();
-		executingTodo.setTitle(todoList.get(index).title);
+		executingTodo.setTitle(executingTodoTitle);
 		executingTodo.setStartDate(new Date());
 		TodoControl.setExecutingTodo(executingTodo);
+
+		System.out.println(MessageUtil.getMessage("info.command.start", executingTodoTitle));
 	}
 
 	private String createErrorMessage() {
