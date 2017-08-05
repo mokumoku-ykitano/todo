@@ -22,7 +22,10 @@ import todo.exception.TodoException;
 
 public final class FilesUtil {
 
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	/** todoログファイル名 */
+	private static final SimpleDateFormat todoLogFileName = new SimpleDateFormat("yyyy-MM-dd");
+	/** todoログに出力する日付 */
+	private static final SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 	/*
 	 * インスタンス化禁止
@@ -38,7 +41,7 @@ public final class FilesUtil {
 	 */
 	public static void createTodoDirectories() throws TodoException {
 		try {
-			Files.createDirectories(Paths.get(getFullTodoLogDirectoryPath()));
+			Files.createDirectories(Paths.get(getFullTodoLogDirectoryPathText()));
 		} catch (IOException e) {
 			throw new TodoException(e, "error.util.create.directories");
 		}
@@ -49,7 +52,7 @@ public final class FilesUtil {
 	 * 
 	 * @return Todoリストのフルパス
 	 */
-	private static String getFullTodoListPath() {
+	private static String getFullTodoListPathText() {
 		ResourceBundle todoProp = ResourceBundle.getBundle("todo");
 		return todoProp.getString("DIRECTORY_PATH") + todoProp.getString("TODO_LIST_FILE_NAME");
 	}
@@ -60,7 +63,7 @@ public final class FilesUtil {
 	 * @return TodoリストのPathオブジェクト
 	 */
 	public static Path getTodoListPath() {
-		return Paths.get(getFullTodoListPath());
+		return Paths.get(getFullTodoListPathText());
 	}
 
 	/**
@@ -73,7 +76,7 @@ public final class FilesUtil {
 	 */
 	public static List<Todo> loadTodoList() throws TodoException {
 
-		Path todoListPath = Paths.get(getFullTodoListPath());
+		Path todoListPath = getTodoListPath();
 
 		if (Files.exists(todoListPath)) {
 			// 既存リストの読み込み
@@ -97,14 +100,12 @@ public final class FilesUtil {
 	 */
 	public static void writeTodoList(List<Todo> todoList) throws TodoException, IOException {
 		try {
-			String jsonText = new ObjectMapper().writeValueAsString(todoList);
+			String jsonText = makeJsonText(todoList);
 			List<String> list = new ArrayList<>();
 			list.add(jsonText);
 
 			Files.write(FilesUtil.getTodoListPath(), list, StandardOpenOption.CREATE,
 					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-		} catch (JsonProcessingException e) {
-			throw new TodoException(e, "error.util.json");
 		} catch (IOException e) {
 			// 呼び出し元でキャッチしてエラーを設定する
 			throw e;
@@ -112,26 +113,58 @@ public final class FilesUtil {
 	}
 
 	/**
-	 * Todoログファイルにログを追記します。
+	 * Todoログ用のマッパーを生成します。
 	 * 
-	 * @param startDate
-	 * @param endDate
-	 * @param title
+	 * @return Todoログ用のマッパー
+	 */
+	private static ObjectMapper createTodoLogMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setDateFormat(todoLogDate);
+		return objectMapper;
+	}
+
+	/**
+	 * 引数からJSON文字列を作成します。
+	 * 
+	 * @param object
+	 * @return JSON文字列
+	 * @throws TodoException
+	 */
+	private static String makeJsonText(Object object) throws TodoException {
+		return makeJsonText(new ObjectMapper(), object);
+	}
+
+	/**
+	 * 引数からJSON文字列を作成します。
+	 * 
+	 * @param objectMapper
+	 * @param object
+	 * @return JSON文字列
+	 * @throws TodoException
+	 */
+	private static String makeJsonText(ObjectMapper objectMapper, Object object) throws TodoException {
+		try {
+			return objectMapper.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			throw new TodoException(e, "error.util.json");
+		}
+	}
+
+	/**
+	 * Todoログを引数の内容で上書きします。
+	 * 
+	 * @param todologList
 	 * @throws TodoException
 	 * @throws IOException
 	 */
-	public static void writeTodoLog(Date startDate, Date endDate, String title) throws TodoException, IOException {
+	public static void writeTodoLog(List<TodoLog> todologList) throws TodoException, IOException {
 		try {
-			TodoLog todoLog = new TodoLog(startDate, endDate, title);
-			String jsonText = new ObjectMapper().writeValueAsString(todoLog);
+			String jsonText = makeJsonText(createTodoLogMapper(), todologList);
 			List<String> list = new ArrayList<>();
 			list.add(jsonText);
 
-			Files.write(getTodoLogPath(new Date()), list, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
-					StandardOpenOption.APPEND);
-
-		} catch (JsonProcessingException e) {
-			throw new TodoException(e, "error.util.json");
+			Files.write(FilesUtil.getTodoLogPath(new Date()), list, StandardOpenOption.CREATE,
+					StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 		} catch (IOException e) {
 			// 呼び出し元でキャッチしてエラーを設定する
 			throw e;
@@ -143,7 +176,7 @@ public final class FilesUtil {
 	 * 
 	 * @return Todoログフォルダのフルパス
 	 */
-	private static String getFullTodoLogDirectoryPath() {
+	private static String getFullTodoLogDirectoryPathText() {
 		ResourceBundle todoProp = ResourceBundle.getBundle("todo");
 		return todoProp.getString("DIRECTORY_PATH") + "log/";
 	}
@@ -154,8 +187,8 @@ public final class FilesUtil {
 	 * @param date
 	 * @return Todoログのフルパス
 	 */
-	private static String getFullTodoLogPath(Date date) {
-		return getFullTodoLogDirectoryPath() + sdf.format(date) + ".log";
+	private static String getFullTodoLogPathText(Date date) {
+		return getFullTodoLogDirectoryPathText() + todoLogFileName.format(date) + ".log";
 	}
 
 	/**
@@ -164,7 +197,31 @@ public final class FilesUtil {
 	 * @return TodoログのPathオブジェクト
 	 */
 	public static Path getTodoLogPath(Date date) {
-		return Paths.get(getFullTodoLogPath(date));
+		return Paths.get(getFullTodoLogPathText(date));
+	}
+
+	/**
+	 * Todoログを読み込んで、リストに変換して返します。<br>
+	 * Todoログが存在しない場合、空のリストを返します。
+	 * 
+	 * @return Todoログリスト
+	 * @throws TodoException
+	 */
+	public static List<TodoLog> loadTodoLogList() throws TodoException {
+
+		Path todoListPath = getTodoLogPath(new Date());
+
+		if (Files.exists(todoListPath)) {
+			// 既存リストの読み込み
+			try (InputStream is = Files.newInputStream(todoListPath)) {
+				return createTodoLogMapper().readValue(is, new TypeReference<List<TodoLog>>() {
+				});
+			} catch (IOException e) {
+				throw new TodoException(e, "error.util.load.todoLogList");
+			}
+		} else {
+			return new ArrayList<>();
+		}
 	}
 
 }
