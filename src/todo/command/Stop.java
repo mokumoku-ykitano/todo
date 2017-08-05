@@ -23,6 +23,7 @@ public class Stop extends Command {
 
 		try {
 			FilesUtil.writeTodoLog(executingTodo.getStartDate(), new Date(), executingTodo.getTitle());
+			TodoControl.setExecutingTodo(null);
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.stop", executingTodo.getTitle());
 		}

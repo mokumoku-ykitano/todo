@@ -36,9 +36,6 @@ public class TodoControl {
 				try {
 					command = Command.create(inputText);
 					command.execute();
-					if (command.getExecutingTodo() != null) {
-						executingTodo = command.getExecutingTodo();
-					}
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
@@ -51,6 +48,10 @@ public class TodoControl {
 
 	public static ExecutingTodo getExecutingTodo() {
 		return executingTodo;
+	}
+
+	public static void setExecutingTodo(ExecutingTodo executingTodo) {
+		TodoControl.executingTodo = executingTodo;
 	}
 
 }

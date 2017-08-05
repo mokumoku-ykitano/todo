@@ -2,7 +2,6 @@ package todo.command;
 
 import java.util.Arrays;
 
-import todo.dto.ExecutingTodo;
 import todo.exception.TodoException;
 import todo.util.StringUtil;
 
@@ -55,15 +54,6 @@ public abstract class Command {
 	 */
 	public boolean nextCommandWaitIs() {
 		return true;
-	}
-
-	/**
-	 * 実行中のtodoオブジェクトを取得します。
-	 * 
-	 * @return 実行中のtodoオブジェクト(何も実行していないときはnull)
-	 */
-	public ExecutingTodo getExecutingTodo() {
-		return null;
 	}
 
 }

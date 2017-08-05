@@ -3,6 +3,7 @@ package todo.command;
 import java.util.Date;
 import java.util.List;
 
+import todo.TodoControl;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.Todo;
 import todo.exception.TodoException;
@@ -13,7 +14,6 @@ import todo.util.FilesUtil;
 public class Start extends Command {
 
 	private int todoIndex;
-	private ExecutingTodo executingTodo;
 
 	@Override
 	public void setArguments(String[] args) {
@@ -31,7 +31,7 @@ public class Start extends Command {
 	public void execute() throws TodoException {
 
 		// TODO 実行中のtodoがある場合、stopする
-		
+
 		int index = todoIndex - 1;
 		List<Todo> todoList = FilesUtil.loadTodoList();
 
@@ -40,14 +40,10 @@ public class Start extends Command {
 			return;
 		}
 
-		executingTodo = new ExecutingTodo();
+		ExecutingTodo executingTodo = new ExecutingTodo();
 		executingTodo.setTitle(todoList.get(index).title);
 		executingTodo.setStartDate(new Date());
-	}
-
-	@Override
-	public ExecutingTodo getExecutingTodo() {
-		return executingTodo;
+		TodoControl.setExecutingTodo(executingTodo);
 	}
 
 	private String createErrorMessage() {
