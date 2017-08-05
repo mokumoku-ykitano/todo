@@ -7,6 +7,13 @@ import todo.util.StringUtil;
 
 public abstract class Command {
 
+	/**
+	 * コマンドオブジェクトを生成します。
+	 * 
+	 * @param inputText
+	 * @return コマンドオブジェクト
+	 * @throws TodoException
+	 */
 	public static Command create(String inputText) throws TodoException {
 		// 入力文字列(コマンド、引数)を配列化
 		String[] text = inputText.split(" ");
