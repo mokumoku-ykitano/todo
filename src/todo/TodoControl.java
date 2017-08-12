@@ -34,7 +34,7 @@ public class TodoControl {
 			while (doContinue) {
 				inputText = scanner.nextLine();
 				try {
-					command = Command.create(inputText);
+					command = CommandFactory.create(inputText);
 					command.execute();
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
