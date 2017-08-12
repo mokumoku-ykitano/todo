@@ -15,7 +15,7 @@ public class Stop extends Command {
 
 	@Override
 	public void execute() throws TodoException {
-		
+
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
 
 		if (executingTodo == null) {
@@ -25,12 +25,13 @@ public class Stop extends Command {
 
 		try {
 			List<TodoLog> todoLogList = FilesUtil.loadTodoLogList();
-			TodoLog todoLog = new TodoLog(executingTodo.getStartDate(), new Date(), executingTodo.getTitle());
+			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), executingTodo.title);
 			todoLogList.add(todoLog);
 			FilesUtil.writeTodoLog(todoLogList);
 			TodoControl.setExecutingTodo(null);
+			System.out.println(MessageUtil.getMessage("info.command.stop", executingTodo.title));
 		} catch (IOException e) {
-			throw new TodoException(e, "error.command.stop", executingTodo.getTitle());
+			throw new TodoException(e, "error.command.stop", executingTodo.title);
 		}
 	}
 

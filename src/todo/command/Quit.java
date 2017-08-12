@@ -7,9 +7,9 @@ public class Quit extends Command {
 
 	@Override
 	public void execute() throws TodoException {
-		System.out.println(MessageUtil.getMessage("info.quit"));
+		System.out.println(MessageUtil.getMessage("info.command.quit"));
 	}
-	
+
 	@Override
 	public boolean nextCommandWaitIs() {
 		return false;

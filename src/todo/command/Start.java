@@ -43,8 +43,8 @@ public class Start extends Command {
 		String executingTodoTitle = todoList.get(index).title;
 
 		ExecutingTodo executingTodo = new ExecutingTodo();
-		executingTodo.setTitle(executingTodoTitle);
-		executingTodo.setStartDate(new Date());
+		executingTodo.title = executingTodoTitle;
+		executingTodo.startDate = new Date();
 		TodoControl.setExecutingTodo(executingTodo);
 
 		System.out.println(MessageUtil.getMessage("info.command.start", executingTodoTitle));
