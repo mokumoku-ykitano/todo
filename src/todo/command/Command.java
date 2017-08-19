@@ -1,6 +1,7 @@
 package todo.command;
 
 import todo.exception.TodoException;
+import todo.util.MessageUtil;
 
 public abstract class Command {
 
@@ -27,6 +28,17 @@ public abstract class Command {
 	 */
 	public boolean nextCommandWaitIs() {
 		return true;
+	}
+
+	/**
+	 * ヘルプで表示する文字列を取得します。
+	 * 
+	 * @return ヘルプで表示する文字列
+	 */
+	public String getHelpText() {
+		String command = this.getClass().getSimpleName().toLowerCase();
+		// コマンド + コマンド説明文
+		return String.format("%-7s", command) + MessageUtil.getMessage("info.command.help." + command);
 	}
 
 }
