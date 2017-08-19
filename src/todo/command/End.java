@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import todo.TodoControl;
+import todo.TodoLogic;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.Todo;
 import todo.dto.json.TodoLog;
 import todo.exception.TodoException;
-import todo.util.FilesUtil;
 import todo.util.MessageUtil;
 
 public class End extends Command {
@@ -24,12 +24,12 @@ public class End extends Command {
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
 
 		try {
-			List<TodoLog> todoLogList = FilesUtil.loadTodoLogList();
+			List<TodoLog> todoLogList = TodoLogic.loadTodoLogList();
 			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), executingTodo.title);
 			todoLogList.add(todoLog);
-			FilesUtil.writeTodoLog(todoLogList);
+			TodoLogic.writeTodoLog(todoLogList);
 			
-			List<Todo> todoList = FilesUtil.loadTodoList();
+			List<Todo> todoList = TodoLogic.loadTodoList();
 			int index = -1; 
 			for(int i = 0;i<todoList.size();i++){
 				if(todoList.get(i).title.equals(executingTodo.title)){
@@ -42,7 +42,7 @@ public class End extends Command {
 				todoList.remove(index);
 			}
 			
-			FilesUtil.writeTodoList(todoList);
+			TodoLogic.writeTodoList(todoList);
 			
 			TodoControl.setExecutingTodo(null);
 		

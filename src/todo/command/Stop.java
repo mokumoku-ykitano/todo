@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import todo.TodoControl;
+import todo.TodoLogic;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.TodoLog;
 import todo.exception.TodoException;
-import todo.util.FilesUtil;
 import todo.util.MessageUtil;
 
 public class Stop extends Command {
@@ -23,10 +23,10 @@ public class Stop extends Command {
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
 
 		try {
-			List<TodoLog> todoLogList = FilesUtil.loadTodoLogList();
+			List<TodoLog> todoLogList = TodoLogic.loadTodoLogList();
 			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), executingTodo.title);
 			todoLogList.add(todoLog);
-			FilesUtil.writeTodoLog(todoLogList);
+			TodoLogic.writeTodoLog(todoLogList);
 			TodoControl.setExecutingTodo(null);
 			System.out.println(MessageUtil.getMessage("info.command.stop", executingTodo.title));
 		} catch (IOException e) {

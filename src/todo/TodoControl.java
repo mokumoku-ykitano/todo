@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import todo.command.Command;
 import todo.dto.ExecutingTodo;
-import todo.util.FilesUtil;
 import todo.util.MessageUtil;
 
 public class TodoControl {
@@ -24,7 +23,7 @@ public class TodoControl {
 				.readConfiguration(TodoControl.class.getClassLoader().getResourceAsStream("logging.properties"));
 
 		// 必要なフォルダを全て作成する
-		FilesUtil.createTodoDirectories();
+		TodoLogic.createTodoDirectories();
 
 		try (Scanner scanner = new Scanner(System.in)) {
 

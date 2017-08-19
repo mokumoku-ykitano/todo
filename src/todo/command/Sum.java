@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import todo.TodoLogic;
 import todo.dto.json.TodoLog;
 import todo.exception.TodoException;
-import todo.util.FilesUtil;
 import todo.util.MessageUtil;
 
 public class Sum extends Command {
@@ -14,7 +14,7 @@ public class Sum extends Command {
 	@Override
 	public void execute() throws TodoException {
 
-		List<TodoLog> logList = FilesUtil.loadTodoLogList();
+		List<TodoLog> logList = TodoLogic.loadTodoLogList();
 
 		if (logList.size() == 0) {
 			System.out.println(MessageUtil.getMessage("info.command.sum.nothing"));

@@ -3,10 +3,10 @@ package todo.command;
 import java.io.IOException;
 import java.util.List;
 
+import todo.TodoLogic;
 import todo.dto.json.Todo;
 import todo.exception.TodoException;
 import todo.util.MessageUtil;
-import todo.util.FilesUtil;
 
 public class Add extends Command {
 
@@ -23,10 +23,10 @@ public class Add extends Command {
 	@Override
 	public void execute() throws TodoException {
 		try {
-			List<Todo> todoList = FilesUtil.loadTodoList();
+			List<Todo> todoList = TodoLogic.loadTodoList();
 			todoList.add(new Todo(todoTitle));
 
-			FilesUtil.writeTodoList(todoList);
+			TodoLogic.writeTodoList(todoList);
 
 			System.out.println(MessageUtil.getMessage("info.command.add.finish", todoTitle));
 			
