@@ -16,6 +16,7 @@ public class Alias extends Command {
 		commandAlias.put("e", "end");
 		commandAlias.put("h", "help");
 		commandAlias.put("l", "list");
+		commandAlias.put("m", "meeting");
 		commandAlias.put("q", "quit");
 		commandAlias.put("st", "start");
 		commandAlias.put("sp", "stop");
