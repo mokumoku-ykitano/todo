@@ -14,6 +14,8 @@ import todo.util.MessageUtil;
 
 public class End extends Command {
 
+	private String todoTitle;
+
 	@Override
 	public void execute() throws TodoException {
 
@@ -21,36 +23,40 @@ public class End extends Command {
 			System.out.println(MessageUtil.getMessage("info.command.noExecuting"));
 			return;
 		}
-		
+
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
+		todoTitle = executingTodo.title;
 
 		try {
 			List<TodoLog> todoLogList = TodoLogic.loadTodoLogList();
-			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), executingTodo.title);
+			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), todoTitle);
 			todoLogList.add(todoLog);
 			TodoLogic.writeTodoLog(todoLogList);
-			
+
 			List<Todo> todoList = TodoLogic.loadTodoList();
-			int index = -1; 
-			for(int i = 0;i<todoList.size();i++){
-				if(todoList.get(i).title.equals(executingTodo.title)){
+			int index = -1;
+			for (int i = 0; i < todoList.size(); i++) {
+				if (todoList.get(i).title.equals(todoTitle)) {
 					index = i;
 					break;
 				}
 			}
-			
-			if(index != -1){
+
+			if (index != -1) {
 				todoList.remove(index);
 			}
-			
+
 			TodoLogic.writeTodoList(todoList);
-			
+
 			TodoControl.setExecutingTodo(null);
-		
-			System.out.println(MessageUtil.getMessage("info.command.end", executingTodo.title));
+
 		} catch (IOException e) {
-			throw new TodoException(e, "error.command.end", executingTodo.title);
+			throw new TodoException(e, "error.command.end", todoTitle);
 		}
 	}
 
+	@Override
+	public void showMessage() {
+		System.out.println(MessageUtil.getMessage("info.command.end", todoTitle));
+	}
 }

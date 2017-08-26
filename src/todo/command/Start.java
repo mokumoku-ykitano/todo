@@ -15,6 +15,8 @@ public class Start extends Command {
 
 	private int todoIndex;
 
+	private String todoTitle;
+
 	@Override
 	public void setArguments(String[] args) {
 		if (args == null || args.length == 0) {
@@ -34,6 +36,7 @@ public class Start extends Command {
 		if (TodoControl.isExecutingTodo()) {
 			Command stopCommand = new Stop();
 			stopCommand.execute();
+			stopCommand.showMessage();
 		}
 
 		int index = todoIndex - 1;
@@ -44,18 +47,21 @@ public class Start extends Command {
 			return;
 		}
 
-		String executingTodoTitle = todoList.get(index).title;
+		todoTitle = todoList.get(index).title;
 
 		ExecutingTodo executingTodo = new ExecutingTodo();
-		executingTodo.title = executingTodoTitle;
+		executingTodo.title = todoTitle;
 		executingTodo.startDate = new Date();
 		TodoControl.setExecutingTodo(executingTodo);
-
-		System.out.println(MessageUtil.getMessage("info.command.start", executingTodoTitle));
 	}
 
 	private String createErrorMessage() {
 		return MessageUtil.getMessage("error.command.argument.todoNumber", "開始", "start");
+	}
+
+	@Override
+	public void showMessage() {
+		System.out.println(MessageUtil.getMessage("info.command.start", todoTitle));
 	}
 
 }

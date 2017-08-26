@@ -35,6 +35,8 @@ public class TodoControl {
 				try {
 					command = CommandFactory.createAndSetArguments(inputText);
 					command.execute();
+					command.showMessage();
+					command.after();
 					doContinue = command.nextCommandWaitIs();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());

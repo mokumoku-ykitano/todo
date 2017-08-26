@@ -33,13 +33,20 @@ public class Add extends Command {
 
 			TodoLogic.writeTodoList(todoList);
 
-			System.out.println(MessageUtil.getMessage("info.command.add.finish", todoTitles));
-
-			Command listCommand = new todo.command.List();
-			listCommand.execute();
-
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.add.list", todoTitles);
 		}
 	}
+
+	@Override
+	public void showMessage() {
+		System.out.println(MessageUtil.getMessage("info.command.add.finish", todoTitles));
+	}
+
+	@Override
+	public void after() throws TodoException {
+		Command listCommand = new todo.command.List();
+		listCommand.execute();
+	}
+
 }

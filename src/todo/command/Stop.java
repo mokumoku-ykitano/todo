@@ -13,6 +13,8 @@ import todo.util.MessageUtil;
 
 public class Stop extends Command {
 
+	private String todoTitle;
+
 	@Override
 	public void execute() throws TodoException {
 
@@ -22,17 +24,22 @@ public class Stop extends Command {
 		}
 
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
+		todoTitle = executingTodo.title;
 
 		try {
 			List<TodoLog> todoLogList = TodoLogic.loadTodoLogList();
-			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), executingTodo.title);
+			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), todoTitle);
 			todoLogList.add(todoLog);
 			TodoLogic.writeTodoLog(todoLogList);
 			TodoControl.setExecutingTodo(null);
-			System.out.println(MessageUtil.getMessage("info.command.stop", executingTodo.title));
 		} catch (IOException e) {
-			throw new TodoException(e, "error.command.stop", executingTodo.title);
+			throw new TodoException(e, "error.command.stop", todoTitle);
 		}
+	}
+
+	@Override
+	public void showMessage() {
+		System.out.println(MessageUtil.getMessage("info.command.stop", todoTitle));
 	}
 
 }

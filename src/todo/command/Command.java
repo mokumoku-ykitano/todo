@@ -21,6 +21,20 @@ public abstract class Command {
 	public abstract void execute() throws TodoException;
 
 	/**
+	 * コマンド実行後にメッセージを表示します。
+	 */
+	public void showMessage() {
+
+	}
+
+	/**
+	 * コマンド実行後の後処理を行います。
+	 */
+	public void after() throws TodoException {
+
+	}
+
+	/**
 	 * 次の入力を待つかどうか。<br>
 	 * 終了する場合はfalseを返す。
 	 * 

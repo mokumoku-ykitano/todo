@@ -13,6 +13,8 @@ public class Delete extends Command {
 
 	private int todoIndex;
 
+	private String todoTitle;
+
 	@Override
 	public void setArguments(String[] args) {
 		if (args == null || args.length == 0) {
@@ -36,14 +38,11 @@ public class Delete extends Command {
 			return;
 		}
 
-		String todoTitle = todoList.get(index).title;
+		todoTitle = todoList.get(index).title;
 		todoList.remove(index);
 
 		try {
 			TodoLogic.writeTodoList(todoList);
-			System.out.println(MessageUtil.getMessage("info.command.delete.finish", todoTitle));
-			Command listCommand = new todo.command.List();
-			listCommand.execute();
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.delete", todoTitle);
 		}
@@ -51,6 +50,17 @@ public class Delete extends Command {
 
 	private String createErrorMessage() {
 		return MessageUtil.getMessage("error.command.argument.todoNumber", "削除", "delete");
+	}
+
+	@Override
+	public void showMessage() {
+		System.out.println(MessageUtil.getMessage("info.command.delete.finish", todoTitle));
+	}
+
+	@Override
+	public void after() throws TodoException {
+		Command listCommand = new todo.command.List();
+		listCommand.execute();
 	}
 
 }
