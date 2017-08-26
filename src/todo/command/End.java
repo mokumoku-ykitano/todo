@@ -42,11 +42,11 @@ public class End extends Command {
 				}
 			}
 
+			// 見つからなかったら何もしない
 			if (index != -1) {
 				todoList.remove(index);
+				TodoLogic.writeTodoList(todoList);
 			}
-
-			TodoLogic.writeTodoList(todoList);
 
 			TodoControl.setExecutingTodo(null);
 
