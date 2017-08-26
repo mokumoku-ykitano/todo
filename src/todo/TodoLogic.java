@@ -23,7 +23,7 @@ public class TodoLogic {
 	private static final SimpleDateFormat todoLogFileName = new SimpleDateFormat("yyyy-MM-dd");
 
 	/** todoログに出力する日付 */
-	private static final SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	/*
 	 * インスタンス化禁止
