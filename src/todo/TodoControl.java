@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import todo.command.Command;
 import todo.dto.ExecutingTodo;
-import todo.util.MessageUtil;
 
 public class TodoControl {
 
@@ -55,12 +54,7 @@ public class TodoControl {
 	}
 
 	public static boolean isExecutingTodo() {
-		if (executingTodo == null) {
-			System.out.println(MessageUtil.getMessage("info.command.noExecuting"));
-			return false;
-		} else {
-			return true;
-		}
+		return executingTodo != null;
 	}
 
 	public static boolean isNotExecutingTodo() {

@@ -18,6 +18,7 @@ public class End extends Command {
 	public void execute() throws TodoException {
 
 		if (TodoControl.isNotExecutingTodo()) {
+			System.out.println(MessageUtil.getMessage("info.command.noExecuting"));
 			return;
 		}
 		

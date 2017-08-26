@@ -30,7 +30,11 @@ public class Start extends Command {
 	@Override
 	public void execute() throws TodoException {
 
-		// TODO 実行中のtodoがある場合、stopする
+		// 実行中のtodoがある場合、stopする
+		if (TodoControl.isExecutingTodo()) {
+			Command stopCommand = new Stop();
+			stopCommand.execute();
+		}
 
 		int index = todoIndex - 1;
 		List<Todo> todoList = TodoLogic.loadTodoList();
