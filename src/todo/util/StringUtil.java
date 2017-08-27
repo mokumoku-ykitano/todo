@@ -66,4 +66,14 @@ public final class StringUtil {
 		return true;
 	}
 
+	/**
+	 * 文字列が数値でないか評価します。
+	 * 
+	 * @param text
+	 * @return 数値でないの場合、true
+	 */
+	public static boolean isNotNumber(String text) {
+		return !isNumber(text);
+	}
+
 }

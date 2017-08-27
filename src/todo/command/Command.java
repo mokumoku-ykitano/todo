@@ -11,7 +11,7 @@ public abstract class Command {
 	 * 
 	 * @param args
 	 */
-	public void setArguments(String[] args) {
+	public void setArguments(String[] args) throws TodoException {
 
 	}
 

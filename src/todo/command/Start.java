@@ -1,6 +1,5 @@
 package todo.command;
 
-import java.util.Date;
 import java.util.List;
 
 import todo.TodoControl;
@@ -13,50 +12,42 @@ import todo.util.StringUtil;
 
 public class Start extends Command {
 
-	private int todoIndex;
-
 	private String todoTitle;
 
 	@Override
-	public void setArguments(String[] args) {
+	public void setArguments(String[] args) throws TodoException {
 		if (args == null || args.length == 0) {
-			throw new IllegalArgumentException(createErrorMessage());
+			throw new IllegalArgumentException(
+					MessageUtil.getMessage("error.command.argument.todoNumber", "開始", "start"));
 		}
-		if (StringUtil.isNumber(args[0])) {
-			todoIndex = Integer.parseInt(args[0]);
-		} else {
-			throw new IllegalArgumentException(MessageUtil.getMessage("error.command.argument.number"));
+		if (StringUtil.isNotNumber(args[0])) {
+			throw new IllegalArgumentException(createArgumentErrorMessage());
 		}
+
+		int todoIndex = Integer.parseInt(args[0]) - 1;
+		List<Todo> todoList = TodoLogic.loadTodoList();
+
+		if (todoIndex < 0 || todoIndex >= todoList.size()) {
+			throw new IllegalArgumentException(createArgumentErrorMessage());
+		}
+
+		Todo todo = todoList.get(todoIndex);
+		todoTitle = todo.title;
+	}
+
+	private String createArgumentErrorMessage() {
+		return MessageUtil.getMessage("error.command.argument.number");
 	}
 
 	@Override
 	public void execute() throws TodoException {
-
 		// 実行中のtodoがある場合、stopする
 		if (TodoControl.isExecutingTodo()) {
 			Command stopCommand = new Stop();
 			stopCommand.execute();
 			stopCommand.showMessage();
 		}
-
-		int index = todoIndex - 1;
-		List<Todo> todoList = TodoLogic.loadTodoList();
-
-		if (todoIndex <= 0 || todoIndex > todoList.size()) {
-			System.err.println(createErrorMessage());
-			return;
-		}
-
-		todoTitle = todoList.get(index).title;
-
-		ExecutingTodo executingTodo = new ExecutingTodo();
-		executingTodo.title = todoTitle;
-		executingTodo.startDate = new Date();
-		TodoControl.setExecutingTodo(executingTodo);
-	}
-
-	private String createErrorMessage() {
-		return MessageUtil.getMessage("error.command.argument.todoNumber", "開始", "start");
+		TodoControl.setExecutingTodo(new ExecutingTodo(todoTitle));
 	}
 
 	@Override
