@@ -20,12 +20,6 @@ import todo.util.FilesUtil;
 
 public class TodoLogic {
 
-	/** todoログファイル名 */
-	private static final SimpleDateFormat todoLogFileName = new SimpleDateFormat("yyyy-MM-dd");
-
-	/** todoログに出力する日付 */
-	private static final SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
 	/*
 	 * インスタンス化禁止
 	 */
@@ -63,6 +57,7 @@ public class TodoLogic {
 	 * @return Todoログのフルパス
 	 */
 	private static String getFullTodoLogPathText(Date date) {
+		SimpleDateFormat todoLogFileName = new SimpleDateFormat("yyyy-MM-dd");
 		return getFullTodoLogDirectoryPathText() + todoLogFileName.format(date) + ".log";
 	}
 
@@ -166,6 +161,7 @@ public class TodoLogic {
 	 */
 	private static ObjectMapper createTodoLogMapper() {
 		ObjectMapper objectMapper = createIndentObjectMapper();
+		SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		objectMapper.setDateFormat(todoLogDate);
 		return objectMapper;
 	}
