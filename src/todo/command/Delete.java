@@ -11,45 +11,48 @@ import todo.util.StringUtil;
 
 public class Delete extends Command {
 
-	private int todoIndex;
-
 	private String todoTitle;
 
 	@Override
-	public void setArguments(String[] args) {
+	public void setArguments(String[] args) throws TodoException {
 		if (args == null || args.length == 0) {
-			throw new IllegalArgumentException(createErrorMessage());
+			throw new IllegalArgumentException(
+					MessageUtil.getMessage("error.command.argument.todoNumber", "削除", "delete"));
 		}
-		if (StringUtil.isNumber(args[0])) {
-			todoIndex = Integer.parseInt(args[0]);
-		} else {
-			throw new IllegalArgumentException(MessageUtil.getMessage("error.command.argument.number"));
+		if (StringUtil.isNotNumber(args[0])) {
+			throw new IllegalArgumentException(createArgumentErrorMessage());
 		}
+
+		int todoIndex = Integer.parseInt(args[0]) - 1;
+		List<Todo> todoList = TodoLogic.loadTodoList();
+
+		if (todoIndex < 0 || todoIndex >= todoList.size()) {
+			throw new IllegalArgumentException(createArgumentErrorMessage());
+		}
+
+		Todo todo = todoList.get(todoIndex);
+		todoTitle = todo.title;
+	}
+
+	private String createArgumentErrorMessage() {
+		return MessageUtil.getMessage("error.command.argument.number");
 	}
 
 	@Override
 	public void execute() throws TodoException {
-
-		int index = todoIndex - 1;
-		List<Todo> todoList = TodoLogic.loadTodoList();
-
-		if (todoIndex <= 0 || todoIndex > todoList.size()) {
-			System.err.println(createErrorMessage());
-			return;
-		}
-
-		todoTitle = todoList.get(index).title;
-		todoList.remove(index);
-
 		try {
-			TodoLogic.writeTodoList(todoList);
+			List<Todo> todoList = TodoLogic.loadTodoList();
+			Todo removeTarget = todoList.stream().filter(todo -> todo.title.equals(todoTitle)).findFirst().orElse(null);
+			todoList.remove(removeTarget);
+
+			// 見つからなかったら何もしない
+			if (removeTarget != null) {
+				todoList.remove(removeTarget);
+				TodoLogic.writeTodoList(todoList);
+			}
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.delete", todoTitle);
 		}
-	}
-
-	private String createErrorMessage() {
-		return MessageUtil.getMessage("error.command.argument.todoNumber", "削除", "delete");
 	}
 
 	@Override

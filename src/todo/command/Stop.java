@@ -19,8 +19,7 @@ public class Stop extends Command {
 	public void execute() throws TodoException {
 
 		if (TodoControl.isNotExecutingTodo()) {
-			System.out.println(MessageUtil.getMessage("info.command.noExecuting"));
-			return;
+			throw new TodoException(MessageUtil.getMessage("info.command.noExecuting"));
 		}
 
 		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();

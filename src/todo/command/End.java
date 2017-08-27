@@ -15,36 +15,31 @@ import todo.util.MessageUtil;
 public class End extends Command {
 
 	private String todoTitle;
+	private Date startDate;
+
+	@Override
+	public void setArguments(String[] args) throws TodoException {
+		if (TodoControl.isNotExecutingTodo()) {
+			throw new TodoException(MessageUtil.getMessage("info.command.noExecuting"));
+		}
+		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
+		todoTitle = executingTodo.title;
+		startDate = executingTodo.startDate;
+	}
 
 	@Override
 	public void execute() throws TodoException {
-
-		if (TodoControl.isNotExecutingTodo()) {
-			System.out.println(MessageUtil.getMessage("info.command.noExecuting"));
-			return;
-		}
-
-		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
-		todoTitle = executingTodo.title;
-
 		try {
 			List<TodoLog> todoLogList = TodoLogic.loadTodoLogList();
-			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), todoTitle);
-			todoLogList.add(todoLog);
+			todoLogList.add(new TodoLog(startDate, new Date(), todoTitle));
 			TodoLogic.writeTodoLog(todoLogList);
 
 			List<Todo> todoList = TodoLogic.loadTodoList();
-			int index = -1;
-			for (int i = 0; i < todoList.size(); i++) {
-				if (todoList.get(i).title.equals(todoTitle)) {
-					index = i;
-					break;
-				}
-			}
+			Todo removeTarget = todoList.stream().filter(todo -> todo.title.equals(todoTitle)).findFirst().orElse(null);
 
 			// 見つからなかったら何もしない
-			if (index != -1) {
-				todoList.remove(index);
+			if (removeTarget != null) {
+				todoList.remove(removeTarget);
 				TodoLogic.writeTodoList(todoList);
 			}
 
