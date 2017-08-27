@@ -9,10 +9,7 @@ public class List extends Command {
 	@Override
 	public void execute() throws TodoException {
 		java.util.List<Todo> todoList = TodoLogic.loadTodoList();
-		int index = 1;
-		for (Todo todo : todoList) {
-			System.out.println(index++ + ":" + todo.title);
-		}
+		todoList.forEach(todo -> System.out.println(todoList.indexOf(todo) + 1 + ":" + todo.title));
 	}
 
 }
