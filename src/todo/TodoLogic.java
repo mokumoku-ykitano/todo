@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import todo.dto.json.Todo;
 import todo.dto.json.TodoLog;
@@ -116,7 +117,16 @@ public class TodoLogic {
 	 * @throws TodoException
 	 */
 	private static List<String> makeJsonText(Object object) throws TodoException {
-		return makeJsonText(new ObjectMapper(), object);
+		return makeJsonText(createIndentObjectMapper(), object);
+	}
+
+	/**
+	 * 整形するオブジェクトマッパーを生成します。
+	 * 
+	 * @return 整形するオブジェクトマッパー
+	 */
+	private static ObjectMapper createIndentObjectMapper() {
+		return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 	}
 
 	/**
@@ -155,7 +165,7 @@ public class TodoLogic {
 	 * @return Todoログ用のマッパー
 	 */
 	private static ObjectMapper createTodoLogMapper() {
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = createIndentObjectMapper();
 		objectMapper.setDateFormat(todoLogDate);
 		return objectMapper;
 	}
