@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import todo.TodoControl;
+import todo.TodoControler;
 import todo.TodoLogic;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.TodoLog;
@@ -18,11 +18,11 @@ public class Stop extends Command {
 	@Override
 	public void execute() throws TodoException {
 
-		if (TodoControl.isNotExecutingTodo()) {
+		if (TodoControler.isNotExecutingTodo()) {
 			throw new TodoException(MessageUtil.getMessage("info.command.noExecuting"));
 		}
 
-		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
+		ExecutingTodo executingTodo = TodoControler.getExecutingTodo();
 		todoTitle = executingTodo.title;
 
 		try {
@@ -30,7 +30,7 @@ public class Stop extends Command {
 			TodoLog todoLog = new TodoLog(executingTodo.startDate, new Date(), todoTitle);
 			todoLogList.add(todoLog);
 			TodoLogic.writeTodoLog(todoLogList);
-			TodoControl.setExecutingTodo(null);
+			TodoControler.setExecutingTodo(null);
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.stop", todoTitle);
 		}

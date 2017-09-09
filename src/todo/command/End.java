@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import todo.TodoControl;
+import todo.TodoControler;
 import todo.TodoLogic;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.Todo;
@@ -19,10 +19,10 @@ public class End extends Command {
 
 	@Override
 	public void setArguments(String[] args) throws TodoException {
-		if (TodoControl.isNotExecutingTodo()) {
+		if (TodoControler.isNotExecutingTodo()) {
 			throw new TodoException(MessageUtil.getMessage("info.command.noExecuting"));
 		}
-		ExecutingTodo executingTodo = TodoControl.getExecutingTodo();
+		ExecutingTodo executingTodo = TodoControler.getExecutingTodo();
 		todoTitle = executingTodo.title;
 		startDate = executingTodo.startDate;
 	}
@@ -43,7 +43,7 @@ public class End extends Command {
 				TodoLogic.writeTodoList(todoList);
 			}
 
-			TodoControl.setExecutingTodo(null);
+			TodoControler.setExecutingTodo(null);
 
 		} catch (IOException e) {
 			throw new TodoException(e, "error.command.end", todoTitle);

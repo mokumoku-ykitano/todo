@@ -2,7 +2,7 @@ package todo.command;
 
 import java.util.List;
 
-import todo.TodoControl;
+import todo.TodoControler;
 import todo.TodoLogic;
 import todo.dto.ExecutingTodo;
 import todo.dto.json.Todo;
@@ -42,12 +42,12 @@ public class Start extends Command {
 	@Override
 	public void execute() throws TodoException {
 		// 実行中のtodoがある場合、stopする
-		if (TodoControl.isExecutingTodo()) {
+		if (TodoControler.isExecutingTodo()) {
 			Command stopCommand = new Stop();
 			stopCommand.execute();
 			stopCommand.showMessage();
 		}
-		TodoControl.setExecutingTodo(new ExecutingTodo(todoTitle));
+		TodoControler.setExecutingTodo(new ExecutingTodo(todoTitle));
 	}
 
 	@Override

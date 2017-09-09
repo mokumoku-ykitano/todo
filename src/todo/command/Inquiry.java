@@ -1,6 +1,6 @@
 package todo.command;
 
-import todo.TodoControl;
+import todo.TodoControler;
 import todo.dto.ExecutingTodo;
 import todo.exception.TodoException;
 import todo.util.MessageUtil;
@@ -22,7 +22,7 @@ public class Inquiry extends Command {
 	@Override
 	public void execute() throws TodoException {
 		// 実行中のtodoがある場合、stopする
-		if (TodoControl.isExecutingTodo()) {
+		if (TodoControler.isExecutingTodo()) {
 			Command stopCommand = new Stop();
 			stopCommand.execute();
 			stopCommand.showMessage();
@@ -30,7 +30,7 @@ public class Inquiry extends Command {
 		if (StringUtil.isNotEmpty(detail)) {
 			title += "(" + detail + ")";
 		}
-		TodoControl.setExecutingTodo(new ExecutingTodo(title));
+		TodoControler.setExecutingTodo(new ExecutingTodo(title));
 	}
 
 	@Override

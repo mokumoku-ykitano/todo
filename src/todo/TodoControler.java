@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 import todo.command.Command;
 import todo.dto.ExecutingTodo;
 
-public class TodoControl {
+public class TodoControler {
 
-	private static final Logger logger = Logger.getLogger(TodoControl.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(TodoControler.class.getSimpleName());
 
 	/** 実行中のtodoオブジェクト */
 	private static ExecutingTodo executingTodo;
@@ -19,7 +19,7 @@ public class TodoControl {
 
 		// ログの設定
 		LogManager.getLogManager()
-				.readConfiguration(TodoControl.class.getClassLoader().getResourceAsStream("logging.properties"));
+				.readConfiguration(TodoControler.class.getClassLoader().getResourceAsStream("logging.properties"));
 
 		// 必要なフォルダを全て作成する
 		TodoLogic.createTodoDirectories();
@@ -52,7 +52,7 @@ public class TodoControl {
 	}
 
 	public static void setExecutingTodo(ExecutingTodo executingTodo) {
-		TodoControl.executingTodo = executingTodo;
+		TodoControler.executingTodo = executingTodo;
 	}
 
 	public static boolean isExecutingTodo() {
