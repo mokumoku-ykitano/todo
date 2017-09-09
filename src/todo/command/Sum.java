@@ -28,9 +28,7 @@ public class Sum extends Command {
 		sumUpTodoLogList.sort(Comparator.comparing(TodoLog::getWorkingMinutes).reversed());
 
 		// 集計結果を表示
-		for (TodoLog todoLog : sumUpTodoLogList) {
-			System.out.println(todoLog.createWorkingHourText());
-		}
+		sumUpTodoLogList.forEach(todoLog -> System.out.println(todoLog.createWorkingHourText()));
 	}
 
 	/**

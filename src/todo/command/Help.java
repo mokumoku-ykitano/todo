@@ -33,8 +33,8 @@ public class Help extends Command {
 	 */
 	private File[] getCommandFiles() {
 		URL url = getClass().getClassLoader().getResource("todo/command");
-		File file = new File(url.getFile());
-		return file.listFiles((dir, name) -> !name.equals("Command.class"));
+		File directory = new File(url.getFile());
+		return directory.listFiles((dir, name) -> !name.equals("Command.class"));
 	}
 
 }

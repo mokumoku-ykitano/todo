@@ -37,7 +37,7 @@ public class End extends Command {
 			List<Todo> todoList = TodoLogic.loadTodoList();
 			Todo removeTarget = todoList.stream().filter(todo -> todo.title.equals(todoTitle)).findFirst().orElse(null);
 
-			// 見つからなかったら何もしない
+			// 見つかれば削除する
 			if (removeTarget != null) {
 				todoList.remove(removeTarget);
 				TodoLogic.writeTodoList(todoList);

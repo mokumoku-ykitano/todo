@@ -1,6 +1,7 @@
 package todo.command;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import todo.TodoLogic;
@@ -25,12 +26,8 @@ public class Add extends Command {
 	public void execute() throws TodoException {
 		try {
 			List<Todo> todoList = TodoLogic.loadTodoList();
-			for (String todoTitle : todoTitles.split(",")) {
-				if (StringUtil.isNotEmpty(todoTitle)) {
-					todoList.add(new Todo(todoTitle));
-				}
-			}
-
+			Arrays.stream(todoTitles.split(",")).filter(todoTitle -> StringUtil.isNotEmpty(todoTitle))
+					.forEach(todoTitle -> todoList.add(new Todo(todoTitle)));
 			TodoLogic.writeTodoList(todoList);
 
 		} catch (IOException e) {

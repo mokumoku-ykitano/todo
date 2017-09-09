@@ -43,9 +43,7 @@ public class Delete extends Command {
 		try {
 			List<Todo> todoList = TodoLogic.loadTodoList();
 			Todo removeTarget = todoList.stream().filter(todo -> todo.title.equals(todoTitle)).findFirst().orElse(null);
-			todoList.remove(removeTarget);
-
-			// 見つからなかったら何もしない
+			// 見つかれば削除する
 			if (removeTarget != null) {
 				todoList.remove(removeTarget);
 				TodoLogic.writeTodoList(todoList);
