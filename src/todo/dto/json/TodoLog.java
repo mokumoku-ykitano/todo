@@ -1,5 +1,6 @@
 package todo.dto.json;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TodoLog {
@@ -105,9 +106,32 @@ public class TodoLog {
 			return false;
 		return true;
 	}
-	
-	public long getWorkingMinutes(){
+
+	public long getWorkingMinutes() {
 		return workingMinutes;
+	}
+
+	public String getStartDateText() {
+		return getDateText(startDate);
+	}
+
+	public String getEndDateText() {
+		return getDateText(endDate);
+	}
+
+	private String getDateText(Date date) {
+		SimpleDateFormat todoLogDate = new SimpleDateFormat("yyyy/MM/dd");
+		return todoLogDate.format(date);
+	}
+
+	public String createDateAndWorkingHourText() {
+		StringBuilder showLogText = new StringBuilder();
+		showLogText.append(getStartDateText());
+		showLogText.append(" ");
+		showLogText.append(getEndDateText());
+		showLogText.append(" ");
+		showLogText.append(createWorkingHourText());
+		return showLogText.toString();
 	}
 
 }

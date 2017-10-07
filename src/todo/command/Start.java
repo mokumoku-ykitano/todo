@@ -17,8 +17,7 @@ public class Start extends Command {
 	@Override
 	public void setArguments(String[] args) throws TodoException {
 		if (args == null || args.length == 0) {
-			throw new IllegalArgumentException(
-					MessageUtil.getMessage("error.command.argument.todoNumber", "開始", "start"));
+			throw new IllegalArgumentException(createArgumentErrorMessage());
 		}
 		if (StringUtil.isNotNumber(args[0])) {
 			throw new IllegalArgumentException(createArgumentErrorMessage());
@@ -36,7 +35,7 @@ public class Start extends Command {
 	}
 
 	private String createArgumentErrorMessage() {
-		return MessageUtil.getMessage("error.command.argument.number");
+		return MessageUtil.getMessage("error.command.argument.todoNumber", "開始", "start");
 	}
 
 	@Override

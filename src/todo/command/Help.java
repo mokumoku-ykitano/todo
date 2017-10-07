@@ -25,6 +25,7 @@ public class Help extends Command {
 		helpList.add("Start");
 		helpList.add("Stop");
 		helpList.add("Sum");
+		helpList.add("Total");
 	}
 
 	@Override

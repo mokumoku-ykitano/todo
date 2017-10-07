@@ -183,7 +183,18 @@ public class TodoLogic {
 	 * @throws TodoException
 	 */
 	public static List<TodoLog> loadTodoLogList() throws TodoException {
-		Path todoListPath = getTodoLogPath(new Date());
+		return loadTodoLogList(new Date());
+	}
+
+	/**
+	 * Todoログを読み込んで、リストに変換して返します。<br>
+	 * Todoログが存在しない場合、空のリストを返します。
+	 * 
+	 * @return Todoログリスト
+	 * @throws TodoException
+	 */
+	public static List<TodoLog> loadTodoLogList(Date date) throws TodoException {
+		Path todoListPath = getTodoLogPath(date);
 		return FilesUtil.loadList(todoListPath, createTodoLogMapper(), TodoLog.class);
 	}
 }

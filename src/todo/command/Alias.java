@@ -22,6 +22,7 @@ public class Alias extends Command {
 		commandAlias.put("q", "quit");
 		commandAlias.put("st", "start");
 		commandAlias.put("sp", "stop");
+		commandAlias.put("t", "total");
 	}
 
 	@Override
