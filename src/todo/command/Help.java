@@ -13,6 +13,7 @@ public class Help extends Command {
 	static {
 		helpList = new LinkedList<>();
 		helpList.add("Add");
+		helpList.add("Alias");
 		helpList.add("Delete");
 		helpList.add("End");
 		helpList.add("Help");
