@@ -1,5 +1,8 @@
 package todo.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public final class StringUtil {
 
 	/*
@@ -74,6 +77,16 @@ public final class StringUtil {
 	 */
 	public static boolean isNotNumber(String text) {
 		return !isNumber(text);
+	}
+
+	/**
+	 * 今日の日付文字列を取得します。
+	 * 
+	 * @return 今日の日付文字列(yyyy-MM-dd)
+	 */
+	public static String getTodayText() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(new Date());
 	}
 
 }

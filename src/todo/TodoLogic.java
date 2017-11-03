@@ -45,7 +45,7 @@ public class TodoLogic {
 	 * 
 	 * @return Todoログフォルダのフルパス
 	 */
-	private static String getFullTodoLogDirectoryPathText() {
+	public static String getFullTodoLogDirectoryPathText() {
 		ResourceBundle todoProp = ResourceBundle.getBundle("todo");
 		return todoProp.getString("DIRECTORY_PATH") + "log/";
 	}
