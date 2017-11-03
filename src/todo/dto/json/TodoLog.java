@@ -3,6 +3,8 @@ package todo.dto.json;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class TodoLog {
 
 	/** 開始日時 */
@@ -111,10 +113,12 @@ public class TodoLog {
 		return workingMinutes;
 	}
 
+	@JsonIgnore
 	public String getStartDateText() {
 		return getDateText(startDate);
 	}
 
+	@JsonIgnore
 	public String getEndDateText() {
 		return getDateText(endDate);
 	}
